@@ -18,8 +18,8 @@ def insert(cnx,student):
         mycursor.execute(sql,val)
         cnx.commit()
         return "input successful! Yohoo!"
-    except:
-        print("error")
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
 #select all works
 
 def show_all(cnx):

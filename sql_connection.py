@@ -12,7 +12,6 @@ def get_config():
 
 def start_connection(config):
     return mysql.connector.connect(**config)
-
 def close_connection(cnx):
     if cnx.is_connected():
         cnx.close()
