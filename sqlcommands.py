@@ -1,5 +1,6 @@
 import json
 from test import *
+import tkinter.messagebox as MessageBox
 #Bechn thabet if user input matches requirements and the date is correct and make it a json
 def turn_to_json(nom,prenom,email,jour,mois,anne):
     if verify_string(nom) and verify_string(prenom) and verify_email(email) and verify_date(jour,mois,anne): 
@@ -19,7 +20,7 @@ def insert(cnx,student):
         cnx.commit()
         return "input successful! Yohoo!"
     except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
+        print(f"Unexpaected {err=}, {type(err)=}")
 #select all works
 
 def show_all(cnx):
@@ -65,3 +66,11 @@ def update(cnx,id,student):
             return "mafamech"
     else:
             return "Insertion successful"
+def login_admin(cnx,nom,password):
+    sql="select * from adming where nom=%s, prenom=%s"
+    val=(nom,password)
+    mycursor=cnx.cursor()
+    mycursor.execute(sql,val)
+    cnx.commit()
+    result=mycursor.fetchone()
+        
