@@ -2,13 +2,14 @@ import tkinter as tk
 import tkinter as tk
 from tkinter import ttk
 from sql_connection import *
-
 from test import *
 from sqlcommands import *
 class MainWindow:
     def __init__(self,master,connection):
         self.connection=connection
         self.master = master
+        self.master.geometry('1280x720')
+        self.master.maxsize(1280,720)
         self.frame1=tk.Frame(self.master, width=250, height=550,bg='#AFAAB9',borderwidth=2, relief="solid")
         self.frame1.place(x=1280-260,y=10)
         self.add_button=tk.Button(self.frame1,text="Add student",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.add_student)
@@ -70,7 +71,7 @@ class MainWindow:
             req=turn_to_json(nom,prenom,email,day,month,year)
             return insert(self.connection,req)
         except:
-            MessageBox.showinfo("ALERT", "Please verif input")
+            MessageBox.showinfo("ALERT", "Please verify input")
     
 
 

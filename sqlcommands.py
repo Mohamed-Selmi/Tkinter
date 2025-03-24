@@ -73,4 +73,8 @@ def login_admin(cnx,nom,password):
     mycursor.execute(sql,val)
     cnx.commit()
     result=mycursor.fetchone()
+    if not result:
+            return "mafamech"
+    else:
+            return "Insertion successful"
         
