@@ -11,7 +11,9 @@ class MainWindow:
         self.master = master
         self.master.geometry('1280x720')
         self.master.maxsize(1280,720)
-        self.frame1=tk.Frame(self.master, width=250, height=550,bg='#AFAAB9',borderwidth=2, relief="solid")
+        self.mainframe=tk.Frame(self.master, width=1280, height=720,bg='#FFEAAE', relief="solid")
+        self.mainframe.place(x=0,y=0)
+        self.frame1=tk.Frame(self.mainframe, width=250, height=550,bg='#AFAAB9',borderwidth=2, relief="solid")
         self.frame1.place(x=1280-260,y=10)
         self.add_button=tk.Button(self.frame1,text="Add student",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.add_student)
         self.add_button.place(x=10,y=25,height=100,width=225)
@@ -19,13 +21,13 @@ class MainWindow:
         self.update_button=tk.Button(self.frame1,text="Update student",font=('Arial',15,"bold"),bg='#F39E60',borderwidth=2, relief="solid",command=self.closeWindow)
                                      #command=lambda: switchWindow(self.master,self.connection,MainWindow,Login))
         self.update_button.place(x=10,y=150,height=100,width=225)
-        self.Delete_button=tk.Button(self.frame1,text="Delete student",font=('Arial',15,"bold"),bg='#FFDAB3',borderwidth=2, relief="solid",command=self.master.withdraw)  
+        self.Delete_button=tk.Button(self.frame1,text="Delete student",font=('Arial',15,"bold"),bg='#FFDAB3',borderwidth=2, relief="solid",command=self.mainframe.destroy)  
         self.Delete_button.place(x=10,y=275,height=100,width=225)
         self.refresh_button=tk.Button(self.frame1,text="Refresh database",font=('Arial',15,"bold"),bg='#FADA7A',borderwidth=2, relief="solid")  
         self.refresh_button.place(x=10,y=400,height=100,width=225)
 
 
-        self.frame2=tk.Frame(self.master, width=1000, height=420,bg='#197278',borderwidth=2, relief="solid")
+        self.frame2=tk.Frame(self.mainframe, width=1000, height=420,bg='#197278',borderwidth=2, relief="solid")
         self.frame2.place(x=10,y=10)
         self.firstname_label= tk.Label(self.frame2, text="Enter student's first name",font=('Arial',13,"bold"))
         self.firstname_label.place(x=20,y=10)
@@ -51,7 +53,7 @@ class MainWindow:
         self.Birthyear_label.place(x=450,y=200)
         self.Year=tk.Entry(self.frame2,width=50)
         self.Year.place(x=450,y=250)
-        self.frame3=tk.Frame(self.master, width=1000, height=250,bg='#AFAAB9',borderwidth=2, relief="solid")
+        self.frame3=tk.Frame(self.mainframe, width=1000, height=250,bg='#AFAAB9',borderwidth=2, relief="solid")
         self.frame3.place(x=10,y=720-260)
     def test(self):
         nom = self.Student_lastname.get()
@@ -74,10 +76,11 @@ class MainWindow:
             return insert(self.connection,req)
         except:
             MessageBox.showinfo("ALERT", "Please verify input")
+    #The main frame widget wraps around all the rest, and destroying it fixed any issue I had with navigating between pages.
     def closeWindow(self):
-        self.master.destroy()
+        self.mainframe.destroy()
         switchWindow(self.master,self.connection,Login) 
-
+  
 
 class Login:
     def __init__(self,master,connection):
