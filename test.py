@@ -18,29 +18,36 @@ def verify_email(a):
         else:
             test=False
     return test
-    
 
 def verify_string(a):
     return a.isalpha() and len(a)<50
 
+def turnToDate(birthDay):
+        try:
+                birthDayArray=birthDay.split("-")
+                year=int(birthDayArray[0])
+                month=int(birthDayArray[1])
+                day=int(birthDayArray[2])
+                return (year,month,day) 
+        except Exception as err:
+                print(f"Unexpected {err=}, {type(err)=}")
 
-def verify_date(j,m,a):
+def verify_date(birthday):
+    (year,month,day)=turnToDate(birthday)
     test=True
-    if j not in range (1,32):
+    if day not in range (1,32):
         test=False
-    if m not in range (1,13):
+    if month not in range (1,13):
         test=False
-    if a not in range(1945,2026):
+    if year not in range(1945,2026):
         test=False
     return test
-def format_date(a,m,j):
-    return datetime.datetime(a,m,j)
+def format_date(date):
+    (year,month,day)=turnToDate(date)
+    return datetime.datetime(year,month,day)
 
 def verify_student(student):
 
     return verify_string(student["nom"]) and verify_string(student["prenom"])and verify_email(student["email"]) and verify_date(student["mois"],)
 
- 
-def vera(nom,prenom,email,jour,mois,anne):
-    return verify_string(nom) and verify_string(prenom) and verify_email(email) and verify_date(jour,mois,anne)
 
