@@ -45,17 +45,20 @@ def search(connection,id):
                 return "mafamech"
         else:
                 return result
-def delete(connection,id):
-        sql= "Delete from student where id = {id1}".format(id1=id)
+def delete(connection,student):
+        mat=student["matricule"]
+        sql= "DELETE FROM student WHERE matricule = %s"
+        val=(mat,)
         mycursor=connection.cursor()
-        mycursor.execute(sql)
+        mycursor.execute(sql,val)
         result=mycursor.fetchone()
-        
+        print(result)
         if not result:
                 return "mafamech"
         else:
                 return "Deleted succesfully"
-#works 
+#works
+'''
 def update(connection,id,student):
     sql="UPDATE student set firstname=%s, lastname=%s, email=%s, naissance=%s where id=%s"
     val=(student["firstname"],student["lastname"],student["email"],student["naissance"],id)
@@ -67,7 +70,7 @@ def update(connection,id,student):
     if not result:
             return "mafamech"
     else:
-            return "Insertion successful"
+            return "Insertion successful"'''
 def login_admin(connection,firstname,password):
     sql="select * from admin where firstname=%s, lastname=%s"
     val=(firstname,password)

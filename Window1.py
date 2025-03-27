@@ -18,10 +18,10 @@ class MainWindow:
         self.add_button=tk.Button(self.frame1,text="Add student",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.add_student)
         self.add_button.place(x=10,y=25,height=100,width=225)
 
-        self.update_button=tk.Button(self.frame1,text="Update student",font=('Arial',15,"bold"),bg='#F39E60',borderwidth=2, relief="solid",command=self.closeWindow)
+        self.update_button=tk.Button(self.frame1,text="Update student",font=('Arial',15,"bold"),bg='#F39E60',borderwidth=2, relief="solid")
                                      #command=lambda: switchWindow(self.master,self.connection,MainWindow,Login))
         self.update_button.place(x=10,y=150,height=100,width=225)
-        self.Delete_button=tk.Button(self.frame1,text="Delete student",font=('Arial',15,"bold"),bg='#FFDAB3',borderwidth=2, relief="solid",command=self.mainframe.destroy)  
+        self.Delete_button=tk.Button(self.frame1,text="Delete student",font=('Arial',15,"bold"),bg='#FFDAB3',borderwidth=2, relief="solid",command=self.deleteStudent)  
         self.Delete_button.place(x=10,y=275,height=100,width=225)
         self.refresh_button=tk.Button(self.frame1,text="Refresh database",font=('Arial',15,"bold"),bg='#FADA7A',borderwidth=2, relief="solid",command=self.fetchData)  
         self.refresh_button.place(x=10,y=400,height=100,width=225)
@@ -57,25 +57,26 @@ class MainWindow:
         #show existing databse elements here
         self.frame3=tk.Frame(self.mainframe, width=1000, height=250,bg='#AFAAB9',borderwidth=2, relief="solid")
         self.frame3.place(x=10,y=720-260)
-        self.studentTable=ttk.Treeview(self.frame3,columns= ("Firstname","Lastname","Email","Birthday","Matricule","Specialty"))
+        self.studentTable=ttk.Treeview(self.frame3,columns= ("Firstname","Lastname","Email","Birthday","Specialty","Matricule"))
         self.studentTable.place(x=10,y=10)
         style = ttk.Style()
         style.configure("Treeview.Heading",font=('Arial',13,"bold"))
-
         self.studentTable.column("#0", width=0,anchor='center')
-        self.studentTable.column("Matricule", width=180,anchor='center')
         self.studentTable.column("Firstname",  width=180,anchor='center')
         self.studentTable.column("Lastname", width=100,anchor='center')
         self.studentTable.column("Email",  width=180,anchor='center')
         self.studentTable.column("Birthday",  width=140,anchor='center')
         self.studentTable.column("Specialty", width=140,anchor='center')
-        self.studentTable.heading("Matricule", text="Matricule",anchor='center')
+        self.studentTable.column("Matricule", width=180,anchor='center')
         self.studentTable.heading("Firstname",  text="Firstname",anchor='center')
         self.studentTable.heading("Lastname", text="Lastname",anchor='center')
         self.studentTable.heading("Email",  text="Email")
         self.studentTable.heading("Birthday",  text="Birthday")
         self.studentTable.heading("Specialty", text="Specialty")
+        self.studentTable.heading("Matricule", text="Matricule",anchor='center')
+        self.studentTable.bind("<<TreeviewSelect>>",self.selectStudentItem)
     def fetchData(self):
+        print('updating')
         for data in self.studentTable.get_children():
             self.studentTable.delete(data)
 
@@ -83,7 +84,23 @@ class MainWindow:
             self.studentTable.insert(parent='', index='end', iid=student, text="", values=(student), tag="row")
             self.studentTable.tag_configure('row', background='#EEEEEE', font=('Arial', 12,'bold'))
             self.studentTable.grid(row=8, column=6, columnspan=5, rowspan=11, padx=10, pady=20)
-
+    def selectStudentItem(self,event):
+        curItem = self.studentTable.focus()
+        studentArr=self.studentTable.item(curItem)['values']
+        firstname =studentArr[0]
+        lastname = studentArr[1]
+        email = studentArr[2]
+        birthday = studentArr[3]
+        specialty=studentArr[4]
+        registration=studentArr[5]
+        student=turn_to_json(firstname,lastname,email,birthday,specialty,registration)
+        return student
+    def deleteStudent(self):
+            event="<<TreeviewSelect>>"
+            student=self.selectStudentItem(event)
+            print(student)
+            delete(self.connection,student)
+            self.fetchData()
     def test(self):
         firstname =self.Student_firstname.get()
         lastname = self.Student_lastname.get()
@@ -91,7 +108,7 @@ class MainWindow:
         birthday = self.Bday.get()
         registration=self.Registration.get()
         specialty=self.Specialty.get()
-        req=turn_to_json(firstname,lastname,email,birthday,registration,specialty)
+        req=turn_to_json(firstname,lastname,email,birthday,specialty,registration)
         print(req)
     def add_student(self):
         try:
@@ -101,8 +118,9 @@ class MainWindow:
             birthday = self.Bday.get()
             registration=self.Registration.get()
             specialty=self.Specialty.get()
-            req=turn_to_json(firstname,lastname,email,birthday,registration,specialty)
-            return insert(self.connection,req)
+            req=turn_to_json(firstname,lastname,email,birthday,specialty,registration)
+            insert(self.connection,req)
+            self.fetchData()
         except:
             MessageBox.showinfo("ALERT", "Please verify input")
         
