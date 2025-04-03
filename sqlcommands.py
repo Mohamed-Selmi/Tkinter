@@ -71,17 +71,18 @@ def update(connection,id,student):
             return "mafamech"
     else:
             return "Insertion successful"'''
-def login_admin(connection,firstname,password):
-    sql="select * from admin where firstname=%s, lastname=%s"
-    val=(firstname,password)
-    mycursor=connection.cursor()
+def loginAdmin(connection,name,password):
+    sql="select * from admin where nom=%s and password=%s"
+    val=(name,password)
+    mycursor=connection.cursor(buffered=True)
     mycursor.execute(sql,val)
     connection.commit()
     result=mycursor.fetchone()
-    if not result:
-            return "mafamech"
+    print(result)
+    if result==None:
+            return False
     else:
-            return "Insertion successful"
+            return True
 def checkUniqueStudent(connection,matricule):
         sql="select * from students where matricule=%s"
         val=(matricule)
@@ -93,3 +94,17 @@ def checkUniqueStudent(connection,matricule):
             return True
         else:
             return False
+        
+
+
+def registerAdmin(connection,name,password):
+    try:
+        sql="insert into Admin(nom,password) values (%s,%s)"
+        val=(name,password)
+        mycursor=connection.cursor()
+        mycursor.execute(sql,val)
+        connection.commit()
+        return True
+    except Exception as err:
+        print(f"Unexpaected {err=}, {type(err)=}")
+        MessageBox.showinfo("ALERT", f"Unexpaected {err[0]}, {type(err)=}")

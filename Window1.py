@@ -138,11 +138,41 @@ class Login:
         self.master.maxsize(500,500)
         self.frame1=tk.Frame(self.master, width=350, height=480,bg='#197278',borderwidth=2, relief="solid")
         self.frame1.place(x=75,y=10)
-        self.add_button=tk.Button(self.frame1,text="Login",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.closeWindow)
+        self.add_button=tk.Button(self.frame1,text="Login",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.login)#self.closeWindow)
                                   #command=lambda: [switchWindow(self.master,self.connection,Login,MainWindow),self.frame1.destroy])
         self.add_button.place(x=50,y=480-100,height=50,width=250)
         self.login_label= tk.Label(self.frame1, text="Enter your name",font=('Arial',13,"bold"))
         self.login_label.place(x=100,y=35)
+        self.admin_name=tk.Entry(self.frame1,width=50)
+        self.admin_name.place(x=15,y=75) 
+        self.password_label= tk.Label(self.frame1, text="Enter your password",font=('Arial',13,"bold"))
+        self.password_label.place(x=100,y=125)
+        self.admin_password=tk.Entry(self.frame1,width=50)
+        self.admin_password.place(x=15,y=165)    
+    def login(self):
+            name=self.admin_name.get()
+            password=self.admin_password.get()
+            loginResult=loginAdmin(self.connection,name,password)
+            if loginResult==True:
+                switchWindow(self.master,self.connection,MainWindow)
+            else:
+                MessageBox.showinfo("ALERT", "Wrong username/password")
+class Register:
+    def __init__(self,master,connection):
+        self.connection=connection
+        self.master = master
+        self.master.geometry('500x500')
+        self.master.maxsize(500,500)
+        self.frame1=tk.Frame(self.master, width=350, height=480,bg='#197278',borderwidth=2, relief="solid")
+        self.frame1.place(x=75,y=10)
+        self.add_button=tk.Button(self.frame1,text="Register",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.register_admin)
+                                  #command=lambda: [switchWindow(self.master,self.connection,Login,MainWindow),self.frame1.destroy])
+        self.add_button.place(x=50,y=480-200,height=50,width=250)
+        self.log_button=tk.Button(self.frame1,text="Already have an account? Sign in!",font=('Arial',10,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=lambda:switchWindow(self.master,self.connection,Login))
+                                  #command=lambda: [switchWindow(self.master,self.connection,Login,MainWindow),self.frame1.destroy])
+        self.log_button.place(x=50,y=480-100,height=50,width=250)
+        self.register_label= tk.Label(self.frame1, text="Enter your name",font=('Arial',13,"bold"))
+        self.register_label.place(x=100,y=35)
         self.admin_name=tk.Entry(self.frame1,width=50)
         self.admin_name.place(x=15,y=75) 
         self.password_label= tk.Label(self.frame1, text="Enter your password",font=('Arial',13,"bold"))
@@ -153,7 +183,10 @@ class Login:
     def closeWindow(self):
         self.frame1.destroy()
         switchWindow(self.master,self.connection,MainWindow)
-
+    def register_admin(self):
+        name=self.admin_name.get()
+        password=self.admin_password.get()
+        registerAdmin(self.connection,name,password)
 
 
 

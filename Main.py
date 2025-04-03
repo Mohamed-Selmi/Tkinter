@@ -3,7 +3,7 @@ from tkinter import ttk
 from sql_connection import *
 from test import *
 from sqlcommands import *
-from Window1 import MainWindow,Login
+from Window1 import MainWindow,Login,Register
 from Window1 import switchWindow
 config=get_config()
 connection = start_connection(config)
@@ -13,7 +13,7 @@ def main():
     root.geometry('1280x720')
     root.maxsize(1280,720)
     root.configure(background='#FFEAAE')
-    switchWindow(root,connection,MainWindow)
+    switchWindow(root,connection,Register)
 if __name__ == '__main__':
     main()
 
