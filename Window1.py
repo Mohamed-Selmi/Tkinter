@@ -15,10 +15,10 @@ class MainWindow:
         self.mainframe.place(x=0,y=0)
         self.frame1=tk.Frame(self.mainframe, width=250, height=550,bg='#AFAAB9',borderwidth=2, relief="solid")
         self.frame1.place(x=1280-260,y=10)
-        self.add_button=tk.Button(self.frame1,text="Add student",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.add_student)
+        self.add_button=tk.Button(self.frame1,text="Add student",font=('Arial',15,"bold"),bg='#F0A04B',borderwidth=2, relief="solid",command=self.addStudent)
         self.add_button.place(x=10,y=25,height=100,width=225)
 
-        self.update_button=tk.Button(self.frame1,text="Update student",font=('Arial',15,"bold"),bg='#F39E60',borderwidth=2, relief="solid")
+        self.update_button=tk.Button(self.frame1,text="Update student",font=('Arial',15,"bold"),bg='#F39E60',borderwidth=2, relief="solid",command=self.updateStudent)
                                      #command=lambda: switchWindow(self.master,self.connection,MainWindow,Login))
         self.update_button.place(x=10,y=150,height=100,width=225)
         self.Delete_button=tk.Button(self.frame1,text="Delete student",font=('Arial',15,"bold"),bg='#FFDAB3',borderwidth=2, relief="solid",command=self.deleteStudent)  
@@ -110,7 +110,7 @@ class MainWindow:
         specialty=self.Specialty.get()
         req=turn_to_json(firstname,lastname,email,birthday,specialty,registration)
         print(req)
-    def add_student(self):
+    def addStudent(self):
         try:
             firstname =self.Student_firstname.get()
             lastname = self.Student_lastname.get()
@@ -123,7 +123,20 @@ class MainWindow:
             self.fetchData()
         except:
             MessageBox.showinfo("ALERT", "Please verify input")
-        
+    def updateStudent(self):
+        event="<<TreeviewSelect>>"
+        student=self.selectStudentItem(event)
+        print(student)
+        mat=student["matricule"]
+        firstname =self.Student_firstname.get()
+        lastname = self.Student_lastname.get()
+        email = self.Student_email.get()
+        birthday = self.Bday.get()
+        registration=self.Registration.get()
+        specialty=self.Specialty.get()
+        req=turn_to_json(firstname,lastname,email,birthday,specialty,registration)  
+        update(self.connection,mat,req)
+        self.fetchData()
     #The main frame widget wraps around all the rest, and destroying it fixed any issue I had with navigating between pages.
     def closeWindow(self):
         self.mainframe.destroy()

@@ -13,7 +13,7 @@ def main():
     root.geometry('1280x720')
     root.maxsize(1280,720)
     root.configure(background='#FFEAAE')
-    switchWindow(root,connection,Register)
+    switchWindow(root,connection,MainWindow)
 if __name__ == '__main__':
     main()
 

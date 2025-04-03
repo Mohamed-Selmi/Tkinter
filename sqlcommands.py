@@ -58,10 +58,10 @@ def delete(connection,student):
         else:
                 return "Deleted succesfully"
 #works
-'''
-def update(connection,id,student):
-    sql="UPDATE student set firstname=%s, lastname=%s, email=%s, naissance=%s where id=%s"
-    val=(student["firstname"],student["lastname"],student["email"],student["naissance"],id)
+
+def update(connection,matricule,student):
+    sql="UPDATE student set firstname=%s, lastname=%s, email=%s, birthday=%s,specialty=%s,matricule=%s where matricule=%s"
+    val=(student["firstname"],student["lastname"],student["email"],student["birthday"],student["specialty"],student["matricule"],matricule)
     mycursor=connection.cursor()
     mycursor.execute(sql,val)
     connection.commit()
@@ -70,7 +70,7 @@ def update(connection,id,student):
     if not result:
             return "mafamech"
     else:
-            return "Insertion successful"'''
+            return "Insertion successful"
 def loginAdmin(connection,name,password):
     sql="select * from admin where nom=%s and password=%s"
     val=(name,password)
