@@ -3,8 +3,8 @@ from tkinter import ttk
 from sql_connection import *
 from test import *
 from sqlcommands import *
-from Window1 import MainWindow,Login,Register
-from Window1 import switchWindow
+from Interfaces import MainWindow,Login,Register
+from Interfaces import switchWindow
 config=get_config()
 connection = start_connection(config)
 def main():
